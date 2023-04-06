@@ -1,0 +1,81 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+  font-size: 16px;
+}
+
+body {
+  padding-top: 70px;
+  margin-bottom: 0px;
+  background-color: #f7f7f7;
+}
+
+p {
+  margin: 0 0 16px;
+}
+
+h2 {
+  margin: 0;
+}
+
+.btn {
+  border: 0;
+  color: rgba(255, 255, 255, 0.85);
+  background-color: #5f679b;
+  transition: all 0.15s;
+  margin-right: 5px;
+}
+.btn:hover {
+  outline: none;
+  background-color: #83bcd4;
+}
+.btn:focus {
+  outline: 0;
+  box-shadow: none !important;
+  box-shadow: 0 0 0 2px #404b61, inset 0 0 0 2px #ffffff;
+}
+.btn:active {
+  transform: scale(0.95);
+  background-color: #294d5c;
+}
+
+main {
+  background-color: #ffffff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.main-color {
+  background: #2c5364;
+}
+
+
+header #navbarColor01 a {
+  transition: 0.3s all ease-in-out;
+}
+
+header #navbarColor01 a:hover {
+  transform: scale(1.15);
+}
+
+.black {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.banner {
+  background-color: rgba(29, 38, 113, 0.7);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  align-items: center;
+}
+
+/* #btnAddStudent,
+#btnAddTeacher,
+#btnAddCustomer {
+  background-color: #5f679b;
+  color: #fff;
+  margin-right: 5px;
+} */
