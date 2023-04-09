@@ -1,7 +1,7 @@
 import { Student } from "../models/Student.js";
 import { Teacher } from "../models/Teacher.js";
 import { Customer } from "../models/Customer.js";
-import * as val from "../models/Validation.js";
+import Validation from "../models/Validation.js";
 
 let personList = getLocalStorage();
 renderPerson(personList);
@@ -20,24 +20,33 @@ window.createStudent = () => {
     let physicScore = getElement("#physics").value;
     let chemisScore = getElement("#chemistry").value;
 
-    if (!val.isValStu()) {
-        return;
+    let isValid = true;
+
+    isValid &= Validation.checkEmpty(id, "tbStudentId", "Thông tin không được để trống!") && Validation.checkIdExist(id, "tbStudentId", "ID đã tồn tại", personList) && Validation.checkId(id, "tbStudentId", "ID phải là số chứa 4-6 kí tự");
+    isValid &= Validation.checkEmpty(name, "tbStudentName", "Thông tin không được để trống!") && Validation.checkName(name, "tbStudentName", "Tên phải là kí tự chữ!");
+    isValid &= Validation.checkEmpty(address, "tbStudentAddress", "Thông tin không được để trống!");
+    isValid &= Validation.checkEmpty(email, "tbStudentEmail", "Thông tin không được để trống!") && Validation.checkEmail(email, "tbStudentEmail", "Email chưa đúng định dạng!");
+    isValid &= Validation.checkEmpty(mathScore, "tbMath", "Thông tin không được để trống!") && Validation.checkScore(mathScore, "tbMath", "Điểm không hợp lệ!");
+    isValid &= Validation.checkEmpty(physicScore, "tbPhysics", "Thông tin không được để trống!") && Validation.checkScore(physicScore, "tbPhysics", "Điểm không hợp lệ!");
+    isValid &= Validation.checkEmpty(chemisScore, "tbChemistry", "Thông tin không được để trống!") && Validation.checkScore(chemisScore, "tbChemistry", "Điểm không hợp lệ!");
+
+    if (isValid) {
+        const student = new Student(
+            id,
+            name,
+            address,
+            email,
+            mathScore,
+            physicScore,
+            chemisScore
+        );
+
+        personList.push(student);
+        setLocalStorage();
+        renderPerson(personList);
+        alert("Thêm Thành Công");
     }
 
-    const student = new Student(
-        id,
-        name,
-        address,
-        email,
-        mathScore,
-        physicScore,
-        chemisScore
-    );
-
-    personList.push(student);
-
-    setLocalStorage();
-    renderPerson(personList);
 }
 
 getElement("#btnAddStudent").onclick = () => {
@@ -58,23 +67,30 @@ window.createTeacher = () => {
     let workDay = getElement("#numberWorking").value;
     let basicSalary = getElement("#salary").value;
 
-    if (!val.isValTea()) {
-        return;
+    let isValid = true;
+
+    isValid &= Validation.checkEmpty(id, "tbTeacherId", "Thông tin không được để trống!") && Validation.checkIdExist(id, "tbTeacherId", "ID đã tồn tại", personList) && Validation.checkId(id, "tbTeacherId", "ID phải là số chứa 4-6 kí tự");
+    isValid &= Validation.checkEmpty(name, "tbTeacherName", "Thông tin không được để trống!") && Validation.checkName(name, "tbTeacherName", "Tên phải là kí tự chữ!");
+    isValid &= Validation.checkEmpty(address, "tbTeacherAddress", "Thông tin không được để trống!");
+    isValid &= Validation.checkEmpty(email, "tbTeacherEmail", "Thông tin không được để trống!") && Validation.checkEmail(email, "tbTeacherEmail", "Email chưa đúng định dạng!");
+    isValid &= Validation.checkEmpty(workDay, "tbNumberWorking", "Thông tin không được để trống!") && Validation.checkDays(workDay, "tbNumberWorking", "Số ngày làm việc phải lớn hơn 0!");
+    isValid &= Validation.checkEmpty(basicSalary, "tbSalary", "Thông tin không được để trống!") && Validation.checkSalary(basicSalary, "tbSalary", "Lương cơ bản phải lớn hơn 0!");
+
+    if (isValid) {
+        const teacher = new Teacher(
+            id,
+            name,
+            address,
+            email,
+            workDay,
+            basicSalary
+        );
+        
+        personList.push(teacher);
+        setLocalStorage();
+        renderPerson(personList);
+        alert("Thêm Thành Công");
     }
-
-    const teacher = new Teacher(
-        id,
-        name,
-        address,
-        email,
-        workDay,
-        basicSalary
-    );
-
-    personList.push(teacher);
-
-    setLocalStorage();
-    renderPerson(personList);
 
 }
 
@@ -97,24 +113,32 @@ window.createCustomer = () => {
     let orderValue = getElement("#invoiceValue").value;
     let rate = getElement("#rate").value;
 
-    if (!val.isValCus()) {
-        return;
+    let isValid = true;
+
+    isValid &= Validation.checkEmpty(id, "tbCustomerId", "Thông tin không được để trống!") && Validation.checkIdExist(id, "tbCustomerId", "ID đã tồn tại", personList) && Validation.checkId(id, "tbCustomerId", "ID phải là số chứa 4-6 kí tự");
+    isValid &= Validation.checkEmpty(name, "tbCustomerName", "Thông tin không được để trống!") && Validation.checkName(name, "tbCustomerName", "Tên phải là kí tự chữ!");
+    isValid &= Validation.checkEmpty(address, "tbCustomerAddress", "Thông tin không được để trống!");
+    isValid &= Validation.checkEmpty(email, "tbCustomerEmail", "Thông tin không được để trống!") && Validation.checkEmail(email, "tbCustomerEmail", "Email chưa đúng định dạng!");
+    isValid &= Validation.checkEmpty(company, "tbCompanyName", "Thông tin không được để trống!");
+    isValid &= Validation.checkEmpty(orderValue, "tbInvoiceValue", "Thông tin không được để trống!") && Validation.checkInvoiceValue(orderValue, "tbInvoiceValue", "Trị giá hóa đơn phải lớn hơn 0!");
+    isValid &= Validation.checkRate("rate", "tbRate", "Thông tin chưa hợp lệ!");
+
+    if (isValid) {
+        const customer = new Customer(
+            id,
+            name,
+            address,
+            email,
+            company,
+            orderValue,
+            rate
+        );
+        
+        personList.push(customer);
+        setLocalStorage();
+        renderPerson(personList);
+        alert("Thêm Thành Công");
     }
-
-    const customer = new Customer(
-        id,
-        name,
-        address,
-        email,
-        company,
-        orderValue,
-        rate
-    );
-
-    personList.push(customer);
-
-    setLocalStorage();
-    renderPerson(personList);
 
 }
 
@@ -194,28 +218,36 @@ window.updateStudent = (personId) => {
     let physicScore = getElement("#physics").value;
     let chemisScore = getElement("#chemistry").value;
 
-    if (!val.isValStu()) {
-        return;
+    let isValid = true;
+
+    isValid &= Validation.checkEmpty(name, "tbStudentName", "Thông tin không được để trống!") && Validation.checkName(name, "tbStudentName", "Tên phải là kí tự chữ!");
+    isValid &= Validation.checkEmpty(address, "tbStudentAddress", "Thông tin không được để trống!");
+    isValid &= Validation.checkEmpty(email, "tbStudentEmail", "Thông tin không được để trống!") && Validation.checkEmail(email, "tbStudentEmail", "Email chưa đúng định dạng!");
+    isValid &= Validation.checkEmpty(mathScore, "tbMath", "Thông tin không được để trống!") && Validation.checkScore(mathScore, "tbMath", "Điểm không hợp lệ!");
+    isValid &= Validation.checkEmpty(physicScore, "tbPhysics", "Thông tin không được để trống!") && Validation.checkScore(physicScore, "tbPhysics", "Điểm không hợp lệ!");
+    isValid &= Validation.checkEmpty(chemisScore, "tbChemistry", "Thông tin không được để trống!") && Validation.checkScore(chemisScore, "tbChemistry", "Điểm không hợp lệ!");
+
+    if (isValid) {
+        const student = new Student(
+            id,
+            name,
+            address,
+            email,
+            mathScore,
+            physicScore,
+            chemisScore
+        );
+
+        let index = personList.findIndex((student) => {
+            return student.id === id;
+        });
+    
+        personList[index] = student;
+        renderPerson(personList);
+        setLocalStorage();
+        alert("Cập Nhập Thành Công");
     }
 
-    const student = new Student(
-        id,
-        name,
-        address,
-        email,
-        mathScore,
-        physicScore,
-        chemisScore
-    );
-
-    let index = personList.findIndex((student) => {
-        return student.id === id;
-    });
-
-    personList[index] = student;
-
-    renderPerson(personList);
-    setLocalStorage();
 }
 
 // Update Teacher
@@ -227,27 +259,34 @@ window.updateTeacher = (personId) => {
     let workDay = getElement("#numberWorking").value;
     let basicSalary = getElement("#salary").value;
 
-    if (!val.isValTea()) {
-        return;
+    let isValid = true;
+
+    isValid &= Validation.checkEmpty(name, "tbTeacherName", "Thông tin không được để trống!") && Validation.checkName(name, "tbTeacherName", "Tên phải là kí tự chữ!");
+    isValid &= Validation.checkEmpty(address, "tbTeacherAddress", "Thông tin không được để trống!");
+    isValid &= Validation.checkEmpty(email, "tbTeacherEmail", "Thông tin không được để trống!") && Validation.checkEmail(email, "tbTeacherEmail", "Email chưa đúng định dạng!");
+    isValid &= Validation.checkEmpty(workDay, "tbNumberWorking", "Thông tin không được để trống!") && Validation.checkDays(workDay, "tbNumberWorking", "Số ngày làm việc phải lớn hơn 0!");
+    isValid &= Validation.checkEmpty(basicSalary, "tbSalary", "Thông tin không được để trống!") && Validation.checkSalary(basicSalary, "tbSalary", "Lương cơ bản phải lớn hơn 0!");
+
+    if (isValid) {
+        const teacher = new Teacher(
+            id,
+            name,
+            address,
+            email,
+            workDay,
+            basicSalary
+        );
+
+        let index = personList.findIndex((teacher) => {
+            return teacher.id === id;
+        });
+    
+        personList[index] = teacher;
+        renderPerson(personList);
+        setLocalStorage();
+        alert("Cập Nhập Thành Công");
     }
-
-    const teacher = new Teacher(
-        id,
-        name,
-        address,
-        email,
-        workDay,
-        basicSalary
-    );
-
-    let index = personList.findIndex((teacher) => {
-        return teacher.id === id;
-    });
-
-    personList[index] = teacher;
-
-    renderPerson(personList);
-    setLocalStorage();
+ 
 }
 
 // Update Customer
@@ -260,28 +299,36 @@ window.updateCustomer = (personId) => {
     let orderValue = getElement("#invoiceValue").value;
     let rate = getElement("#rate").value;
 
-    if (!val.isValCus()) {
-        return;
+    let isValid = true;
+
+    isValid &= Validation.checkEmpty(name, "tbCustomerName", "Thông tin không được để trống!") && Validation.checkName(name, "tbCustomerName", "Tên phải là kí tự chữ!");
+    isValid &= Validation.checkEmpty(address, "tbCustomerAddress", "Thông tin không được để trống!");
+    isValid &= Validation.checkEmpty(email, "tbCustomerEmail", "Thông tin không được để trống!") && Validation.checkEmail(email, "tbCustomerEmail", "Email chưa đúng định dạng!");
+    isValid &= Validation.checkEmpty(company, "tbCompanyName", "Thông tin không được để trống!");
+    isValid &= Validation.checkEmpty(orderValue, "tbInvoiceValue", "Thông tin không được để trống!") && Validation.checkInvoiceValue(orderValue, "tbInvoiceValue", "Trị giá hóa đơn phải lớn hơn 0!");
+    isValid &= Validation.checkRate("rate", "tbRate", "Thông tin chưa hợp lệ!");
+
+    if (isValid) {
+        const customer = new Customer(
+            id,
+            name,
+            address,
+            email,
+            company,
+            orderValue,
+            rate
+        );
+    
+        let index = personList.findIndex((customer) => {
+            return customer.id === id;
+        });
+    
+        personList[index] = customer;
+        renderPerson(personList);
+        setLocalStorage();
+        alert("Cập Nhập Thành Công");
     }
-
-    const customer = new Customer(
-        id,
-        name,
-        address,
-        email,
-        company,
-        orderValue,
-        rate
-    );
-
-    let index = personList.findIndex((customer) => {
-        return customer.id === id;
-    });
-
-    personList[index] = customer;
-
-    renderPerson(personList);
-    setLocalStorage();
+  
 }
 
 // Delete Person
